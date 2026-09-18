@@ -38,6 +38,14 @@ class CancellationModel(BaseModel):
     refund_amount: Optional[float] = None
 
 
+class QueueModel(BaseModel):
+    token: str
+    position: Optional[int] = None
+    queue_date: str
+    seq: int
+    estimated_ready_at: Optional[str] = None
+
+
 class OrderModel(BaseModel):
     order_id: str
     pickup_pin: str
@@ -46,8 +54,9 @@ class OrderModel(BaseModel):
     total_amount: float = Field(..., ge=0)
     pickup_time: str
     payment: PaymentModel
-    status: str = Field(default="CONFIRMED")
+    status: str = Field(default="PENDING_PAYMENT")
     cancellation: CancellationModel = Field(default_factory=CancellationModel)
+    queue: Optional[QueueModel] = None
     created_at: datetime
     updated_at: datetime
 

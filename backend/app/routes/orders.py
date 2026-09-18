@@ -56,6 +56,19 @@ def get_order_status(order_id: str):
     )
 
 
+@router.get("/{order_id}/queue", response_model=OrderResponse)
+def get_order_queue(order_id: str):
+    """
+    Get customer queue status: token, active position, and estimated ready time.
+    Excludes pickup PIN and full customer phone.
+    """
+    queue_data = order_service.get_order_queue(order_id)
+    return OrderResponse(
+        success=True,
+        data=queue_data
+    )
+
+
 @router.post("/{order_id}/pickup", response_model=OrderResponse)
 def verify_pickup(order_id: str, request: PickupVerificationRequest):
     """

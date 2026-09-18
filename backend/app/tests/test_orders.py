@@ -1,3 +1,4 @@
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
 import json
 from pathlib import Path
@@ -7,6 +8,7 @@ from fastapi.testclient import TestClient
 
 from backend.app.main import app
 from backend.app.database.connection import set_test_database
+from backend.app.utils.order_id import generate_queue_token
 
 
 @pytest.fixture(autouse=True)
@@ -744,3 +746,459 @@ def test_regression_terminal_cancelled_cannot_be_modified(client):
     patch_res = client.patch(f"/api/orders/{order_id}/status", json={"status": "CONFIRMED"}, headers=STORE_HEADERS)
     assert patch_res.status_code == 400
     assert patch_res.json()["error"]["code"] == "INVALID_STATUS_TRANSITION"
+
+
+# =====================================================================
+# QUEUE / TOKEN SYSTEM REGRESSION TESTS (24 TESTS)
+# =====================================================================
+
+def test_queue_1_token_generated_automatically(client):
+    """1. Queue token generated automatically upon order creation."""
+    payload = {
+        "customer": {"name": "Queue User 1", "phone": "9876543210"},
+        "items": [{"product_id": "CB001", "quantity": 1}],
+        "pickup_time": "18:00"
+    }
+    res = client.post("/api/orders", json=payload)
+    assert res.status_code == 201
+    data = res.json()["data"]
+    assert "queue" in data
+    assert data["queue"]["token"].startswith("Q")
+    assert len(data["queue"]["token"]) >= 4
+
+
+def test_queue_2_token_cannot_be_client_controlled(client):
+    """2. Queue token cannot be client-controlled."""
+    payload = {
+        "customer": {"name": "Spoof Queue Token", "phone": "9876543210"},
+        "items": [{"product_id": "CB001", "quantity": 1}],
+        "pickup_time": "18:00",
+        "queue": {"token": "Q999", "position": 999}
+    }
+    res = client.post("/api/orders", json=payload)
+    assert res.status_code == 201
+    data = res.json()["data"]
+    assert data["queue"]["token"] != "Q999"
+    assert data["queue"]["token"].startswith("Q")
+
+
+def test_queue_3_position_generated_server_side(client):
+    """3. Queue position generated server-side."""
+    payload = {
+        "customer": {"name": "Queue Pos User", "phone": "9876543210"},
+        "items": [{"product_id": "CB001", "quantity": 1}],
+        "pickup_time": "18:00"
+    }
+    res = client.post("/api/orders", json=payload)
+    assert res.status_code == 201
+    queue = res.json()["data"]["queue"]
+    assert isinstance(queue["position"], int)
+    assert queue["position"] >= 1
+
+
+def test_queue_4_position_cannot_be_client_controlled(client):
+    """4. Queue position cannot be client-controlled."""
+    payload = {
+        "customer": {"name": "Spoof Pos", "phone": "9876543210"},
+        "items": [{"product_id": "CB001", "quantity": 1}],
+        "pickup_time": "18:00",
+        "queue": {"position": 0}
+    }
+    res = client.post("/api/orders", json=payload)
+    assert res.status_code == 201
+    queue = res.json()["data"]["queue"]
+    assert queue["position"] >= 1
+
+
+def test_queue_5_estimated_ready_time_generated_server_side(client):
+    """5. Estimated ready time generated server-side."""
+    payload = {
+        "customer": {"name": "ETA User", "phone": "9876543210"},
+        "items": [{"product_id": "CB001", "quantity": 1}],
+        "pickup_time": "18:00"
+    }
+    res = client.post("/api/orders", json=payload)
+    assert res.status_code == 201
+    queue = res.json()["data"]["queue"]
+    assert "estimated_ready_at" in queue
+    assert queue["estimated_ready_at"] is not None
+    # Validate ISO datetime format
+    parsed_dt = datetime.fromisoformat(queue["estimated_ready_at"])
+    assert parsed_dt is not None
+
+
+def test_queue_6_multiple_orders_receive_unique_tokens(client):
+    """6. Multiple orders receive unique queue tokens."""
+    tokens = set()
+    for i in range(3):
+        payload = {
+            "customer": {"name": f"User {i}", "phone": "9876543210"},
+            "items": [{"product_id": "CB001", "quantity": 1}],
+            "pickup_time": "18:00"
+        }
+        res = client.post("/api/orders", json=payload)
+        tokens.add(res.json()["data"]["queue"]["token"])
+    assert len(tokens) == 3
+
+
+def test_queue_7_numbering_is_sequential(client):
+    """7. Queue numbering is sequential."""
+    payload1 = {
+        "customer": {"name": "Seq 1", "phone": "9876543210"},
+        "items": [{"product_id": "CB001", "quantity": 1}],
+        "pickup_time": "18:00"
+    }
+    payload2 = {
+        "customer": {"name": "Seq 2", "phone": "9876543210"},
+        "items": [{"product_id": "CB001", "quantity": 1}],
+        "pickup_time": "18:00"
+    }
+    res1 = client.post("/api/orders", json=payload1)
+    res2 = client.post("/api/orders", json=payload2)
+    tok1 = res1.json()["data"]["queue"]["token"]
+    tok2 = res2.json()["data"]["queue"]["token"]
+    num1 = int(tok1[1:])
+    num2 = int(tok2[1:])
+    assert num2 == num1 + 1
+
+
+def test_queue_8_numbering_resets_by_date(setup_mock_db):
+    """8. Queue numbering resets by business date in IST."""
+    day1 = datetime(2026, 9, 18, 16, 0)
+    day2 = datetime(2026, 9, 19, 16, 0)
+
+    tok1, date1, seq1 = generate_queue_token(setup_mock_db, dt=day1)
+    assert tok1 == "Q001"
+    assert date1 == "2026-09-18"
+
+    tok2, date2, seq2 = generate_queue_token(setup_mock_db, dt=day1)
+    assert tok2 == "Q002"
+
+    # Next business day resets counter back to Q001
+    tok_next_day, date_next, seq_next = generate_queue_token(setup_mock_db, dt=day2)
+    assert tok_next_day == "Q001"
+    assert date_next == "2026-09-19"
+
+
+def test_queue_9_cancelled_orders_do_not_count_as_active(client):
+    """9. Cancelled orders don't count as active queue orders."""
+    p1 = {
+        "customer": {"name": "Active 1", "phone": "9876543210"},
+        "items": [{"product_id": "CB001", "quantity": 1}],
+        "pickup_time": "18:00"
+    }
+    p2 = {
+        "customer": {"name": "Active 2", "phone": "9876543210"},
+        "items": [{"product_id": "CB001", "quantity": 1}],
+        "pickup_time": "18:00"
+    }
+    r1 = client.post("/api/orders", json=p1)
+    r2 = client.post("/api/orders", json=p2)
+    id1 = r1.json()["data"]["order_id"]
+    id2 = r2.json()["data"]["order_id"]
+
+    # Initial pos of order 2
+    stat2_before = client.get(f"/api/orders/{id2}/status").json()["data"]
+    pos_before = stat2_before["queue"]["position"]
+
+    # Cancel order 1
+    client.post(f"/api/orders/{id1}/cancel")
+
+    # Order 2 position should decrease because order 1 is no longer active in queue
+    stat2_after = client.get(f"/api/orders/{id2}/status").json()["data"]
+    pos_after = stat2_after["queue"]["position"]
+    assert pos_after == pos_before - 1
+
+
+def test_queue_10_picked_up_orders_do_not_count_as_active(client):
+    """10. Picked-up orders don't count as active queue orders."""
+    p1 = {
+        "customer": {"name": "Pickup Ahead", "phone": "9876543210"},
+        "items": [{"product_id": "CB001", "quantity": 1}],
+        "pickup_time": "18:00"
+    }
+    p2 = {
+        "customer": {"name": "Behind", "phone": "9876543210"},
+        "items": [{"product_id": "CB001", "quantity": 1}],
+        "pickup_time": "18:00"
+    }
+    r1 = client.post("/api/orders", json=p1)
+    r2 = client.post("/api/orders", json=p2)
+    id1 = r1.json()["data"]["order_id"]
+    pin1 = r1.json()["data"]["pickup_pin"]
+    id2 = r2.json()["data"]["order_id"]
+
+    stat2_before = client.get(f"/api/orders/{id2}/status").json()["data"]
+    pos_before = stat2_before["queue"]["position"]
+
+    # Advance and complete order 1
+    client.patch(f"/api/orders/{id1}/status", json={"status": "CONFIRMED"}, headers=STORE_HEADERS)
+    client.patch(f"/api/orders/{id1}/status", json={"status": "PREPARING"}, headers=STORE_HEADERS)
+    client.patch(f"/api/orders/{id1}/status", json={"status": "READY_FOR_PICKUP"}, headers=STORE_HEADERS)
+    client.post(f"/api/orders/{id1}/pickup", json={"pickup_pin": pin1})
+
+    stat2_after = client.get(f"/api/orders/{id2}/status").json()["data"]
+    pos_after = stat2_after["queue"]["position"]
+    assert pos_after == pos_before - 1
+
+
+def test_queue_11_appears_in_order_creation_response(client):
+    """11. Queue information appears in order creation response."""
+    payload = {
+        "customer": {"name": "Create Queue Check", "phone": "9876543210"},
+        "items": [{"product_id": "CB001", "quantity": 1}],
+        "pickup_time": "18:00"
+    }
+    res = client.post("/api/orders", json=payload)
+    data = res.json()["data"]
+    assert "queue" in data
+    assert data["queue"]["token"].startswith("Q")
+    assert data["queue"]["position"] >= 1
+    assert data["queue"]["queue_date"] is not None
+    assert data["queue"]["estimated_ready_at"] is not None
+
+
+def test_queue_12_appears_in_order_status_response(client):
+    """12. Queue information appears in order status response."""
+    payload = {
+        "customer": {"name": "Status Queue Check", "phone": "9876543210"},
+        "items": [{"product_id": "CB001", "quantity": 1}],
+        "pickup_time": "18:00"
+    }
+    res = client.post("/api/orders", json=payload)
+    order_id = res.json()["data"]["order_id"]
+
+    stat_res = client.get(f"/api/orders/{order_id}/status")
+    assert stat_res.status_code == 200
+    data = stat_res.json()["data"]
+    assert "queue" in data
+    assert data["queue"]["token"].startswith("Q")
+    assert data["queue"]["position"] >= 1
+
+
+def test_queue_13_appears_in_public_order_lookup(client):
+    """13. Queue information appears in public order lookup."""
+    payload = {
+        "customer": {"name": "Lookup Queue Check", "phone": "9876543210"},
+        "items": [{"product_id": "CB001", "quantity": 1}],
+        "pickup_time": "18:00"
+    }
+    res = client.post("/api/orders", json=payload)
+    order_id = res.json()["data"]["order_id"]
+
+    lookup_res = client.get(f"/api/orders/{order_id}")
+    assert lookup_res.status_code == 200
+    data = lookup_res.json()["data"]
+    assert "queue" in data
+    assert data["queue"]["token"].startswith("Q")
+
+
+def test_queue_14_dedicated_queue_endpoint_without_pin(client):
+    """14. Dedicated GET /api/orders/{order_id}/queue returns queue info without pickup PIN."""
+    payload = {
+        "customer": {"name": "Dedicated Queue Endpoint", "phone": "9876543210"},
+        "items": [{"product_id": "CB001", "quantity": 1}],
+        "pickup_time": "18:00"
+    }
+    res = client.post("/api/orders", json=payload)
+    order_id = res.json()["data"]["order_id"]
+
+    q_res = client.get(f"/api/orders/{order_id}/queue")
+    assert q_res.status_code == 200
+    data = q_res.json()["data"]
+    assert data["order_id"] == order_id
+    assert "queue" in data
+    assert data["queue"]["token"].startswith("Q")
+    assert "pickup_pin" not in data
+    assert "pickup_pin" not in data["queue"]
+
+
+def test_queue_15_customer_phone_remains_masked(client):
+    """15. Customer phone remains masked in order lookup with queue."""
+    payload = {
+        "customer": {"name": "Mask Check", "phone": "9876543210"},
+        "items": [{"product_id": "CB001", "quantity": 1}],
+        "pickup_time": "18:00"
+    }
+    res = client.post("/api/orders", json=payload)
+    order_id = res.json()["data"]["order_id"]
+
+    lookup_res = client.get(f"/api/orders/{order_id}")
+    assert lookup_res.json()["data"]["customer"]["phone"] == "******3210"
+    assert "queue" in lookup_res.json()["data"]
+
+
+def test_queue_16_upi_order_remains_pending_payment(client):
+    """16. UPI order remains PENDING_PAYMENT/PENDING even after queue assignment."""
+    payload = {
+        "customer": {"name": "UPI Queue Test", "phone": "9876543210"},
+        "items": [{"product_id": "CB001", "quantity": 1}],
+        "pickup_time": "18:00",
+        "payment": {"method": "UPI"}
+    }
+    res = client.post("/api/orders", json=payload)
+    assert res.status_code == 201
+    data = res.json()["data"]
+    assert data["status"] == "PENDING_PAYMENT"
+    assert data["payment"]["status"] == "PENDING"
+    assert "queue" in data
+
+
+def test_queue_17_does_not_bypass_payment_state(client):
+    """17. Queue does not bypass payment state (cannot skip PENDING_PAYMENT -> PREPARING)."""
+    payload = {
+        "customer": {"name": "Bypass Test", "phone": "9876543210"},
+        "items": [{"product_id": "CB001", "quantity": 1}],
+        "pickup_time": "18:00",
+        "payment": {"method": "UPI"}
+    }
+    res = client.post("/api/orders", json=payload)
+    order_id = res.json()["data"]["order_id"]
+
+    # Attempt skipping payment confirmation to PREPARING
+    skip_res = client.patch(f"/api/orders/{order_id}/status", json={"status": "PREPARING"}, headers=STORE_HEADERS)
+    assert skip_res.status_code == 400
+    assert skip_res.json()["error"]["code"] == "INVALID_STATUS_TRANSITION"
+
+
+def test_queue_18_existing_state_machine_remains_intact(client):
+    """18. Existing state machine remains intact with queue."""
+    payload = {
+        "customer": {"name": "State Test Queue", "phone": "9876543210"},
+        "items": [{"product_id": "CB001", "quantity": 1}],
+        "pickup_time": "18:00"
+    }
+    res = client.post("/api/orders", json=payload)
+    order_id = res.json()["data"]["order_id"]
+
+    # Step through valid sequence
+    r1 = client.patch(f"/api/orders/{order_id}/status", json={"status": "CONFIRMED"}, headers=STORE_HEADERS)
+    assert r1.status_code == 200
+    assert r1.json()["data"]["status"] == "CONFIRMED"
+
+    r2 = client.patch(f"/api/orders/{order_id}/status", json={"status": "PREPARING"}, headers=STORE_HEADERS)
+    assert r2.status_code == 200
+    assert r2.json()["data"]["status"] == "PREPARING"
+
+    r3 = client.patch(f"/api/orders/{order_id}/status", json={"status": "READY_FOR_PICKUP"}, headers=STORE_HEADERS)
+    assert r3.status_code == 200
+    assert r3.json()["data"]["status"] == "READY_FOR_PICKUP"
+
+
+def test_queue_19_store_token_authorization_remains_intact(client):
+    """19. Existing store-token authorization remains intact with queue."""
+    payload = {
+        "customer": {"name": "Auth Test Queue", "phone": "9876543210"},
+        "items": [{"product_id": "CB001", "quantity": 1}],
+        "pickup_time": "18:00"
+    }
+    res = client.post("/api/orders", json=payload)
+    order_id = res.json()["data"]["order_id"]
+
+    unauth_res = client.patch(f"/api/orders/{order_id}/status", json={"status": "CONFIRMED"})
+    assert unauth_res.status_code == 401
+    assert unauth_res.json()["error"]["code"] == "UNAUTHORIZED_STORE_ACCESS"
+
+
+def test_queue_20_pickup_verification_still_requires_pin(client):
+    """20. Pickup verification still requires READY_FOR_PICKUP + correct PIN."""
+    payload = {
+        "customer": {"name": "Pin Test Queue", "phone": "9876543210"},
+        "items": [{"product_id": "CB001", "quantity": 1}],
+        "pickup_time": "18:00"
+    }
+    res = client.post("/api/orders", json=payload)
+    order_id = res.json()["data"]["order_id"]
+    pin = res.json()["data"]["pickup_pin"]
+
+    # Before READY_FOR_PICKUP fails
+    fail_res = client.post(f"/api/orders/{order_id}/pickup", json={"pickup_pin": pin})
+    assert fail_res.status_code == 400
+
+    # Advance to READY_FOR_PICKUP
+    client.patch(f"/api/orders/{order_id}/status", json={"status": "CONFIRMED"}, headers=STORE_HEADERS)
+    client.patch(f"/api/orders/{order_id}/status", json={"status": "PREPARING"}, headers=STORE_HEADERS)
+    client.patch(f"/api/orders/{order_id}/status", json={"status": "READY_FOR_PICKUP"}, headers=STORE_HEADERS)
+
+    # Wrong PIN fails
+    wrong_pin = client.post(f"/api/orders/{order_id}/pickup", json={"pickup_pin": "0000"})
+    assert wrong_pin.status_code == 400
+
+    # Correct PIN succeeds
+    succ_pin = client.post(f"/api/orders/{order_id}/pickup", json={"pickup_pin": pin})
+    assert succ_pin.status_code == 200
+    assert succ_pin.json()["data"]["status"] == "PICKED_UP"
+
+
+def test_queue_21_pickup_time_validation_remains_intact(client):
+    """21. Pickup-time validation remains intact with queue."""
+    payload = {
+        "customer": {"name": "Time Test Queue", "phone": "9876543210"},
+        "items": [{"product_id": "CB001", "quantity": 1}],
+        "pickup_time": "10:00"  # Outside 16:00-23:00
+    }
+    res = client.post("/api/orders", json=payload)
+    assert res.status_code == 400
+    assert res.json()["error"]["code"] == "STORE_CLOSED"
+
+
+def test_queue_22_rag_behavior_remains_intact_with_queue(client):
+    """22. RAG behavior remains intact with queue."""
+    res = client.post("/api/chat", json={"message": "What are your store hours?"})
+    # Since mock RAG is not running, must return 503 RAG_SERVICE_UNAVAILABLE
+    assert res.status_code == 503
+    assert res.json()["error"]["code"] == "RAG_SERVICE_UNAVAILABLE"
+
+
+def test_queue_23_concurrent_queue_assignment_no_duplicates(setup_mock_db):
+    """23. Concurrent queue assignment does not create duplicate tokens."""
+    def get_token():
+        tok, date_str, seq = generate_queue_token(setup_mock_db)
+        return tok
+
+    with ThreadPoolExecutor(max_workers=8) as executor:
+        futures = [executor.submit(get_token) for _ in range(20)]
+        tokens = [f.result() for f in futures]
+
+    assert len(tokens) == 20
+    assert len(set(tokens)) == 20  # All 20 tokens are strictly unique
+
+
+def test_queue_24_historical_queue_token_retained(client, setup_mock_db):
+    """24. Historical queue token remains stored after pickup and cancellation."""
+    p_pickup = {
+        "customer": {"name": "Hist Pickup", "phone": "9876543210"},
+        "items": [{"product_id": "CB001", "quantity": 1}],
+        "pickup_time": "18:00"
+    }
+    p_cancel = {
+        "customer": {"name": "Hist Cancel", "phone": "9876543210"},
+        "items": [{"product_id": "CB001", "quantity": 1}],
+        "pickup_time": "18:00"
+    }
+    r1 = client.post("/api/orders", json=p_pickup)
+    id1 = r1.json()["data"]["order_id"]
+    tok1 = r1.json()["data"]["queue"]["token"]
+    pin1 = r1.json()["data"]["pickup_pin"]
+
+    r2 = client.post("/api/orders", json=p_cancel)
+    id2 = r2.json()["data"]["order_id"]
+    tok2 = r2.json()["data"]["queue"]["token"]
+
+    # Complete order 1
+    client.patch(f"/api/orders/{id1}/status", json={"status": "CONFIRMED"}, headers=STORE_HEADERS)
+    client.patch(f"/api/orders/{id1}/status", json={"status": "PREPARING"}, headers=STORE_HEADERS)
+    client.patch(f"/api/orders/{id1}/status", json={"status": "READY_FOR_PICKUP"}, headers=STORE_HEADERS)
+    client.post(f"/api/orders/{id1}/pickup", json={"pickup_pin": pin1})
+
+    # Cancel order 2
+    client.post(f"/api/orders/{id2}/cancel")
+
+    # Verify historical tokens in DB
+    doc1 = setup_mock_db.orders.find_one({"order_id": id1})
+    doc2 = setup_mock_db.orders.find_one({"order_id": id2})
+
+    assert doc1["queue"]["token"] == tok1
+    assert doc1["status"] == "PICKED_UP"
+    assert doc2["queue"]["token"] == tok2
+    assert doc2["status"] == "CANCELLED"

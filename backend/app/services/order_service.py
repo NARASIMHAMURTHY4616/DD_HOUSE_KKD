@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional
 from fastapi import HTTPException, status
 
@@ -6,7 +6,7 @@ from backend.app.config.settings import settings
 from backend.app.database.repositories.order_repository import OrderRepository, order_repository
 from backend.app.database.repositories.product_repository import ProductRepository, product_repository
 from backend.app.schemas.order import CreateOrderRequest, PickupVerificationRequest
-from backend.app.utils.order_id import generate_order_id, generate_pickup_pin
+from backend.app.utils.order_id import IST, generate_order_id, generate_pickup_pin, generate_queue_token
 from backend.app.utils.validators import mask_phone, validate_customization, validate_phone, validate_pickup_time
 
 
@@ -144,6 +144,29 @@ class OrderService:
         order_id = generate_order_id()
         pickup_pin = generate_pickup_pin()
 
+        # Atomic Queue Token generation (daily sequential, reset in IST)
+        token, queue_date, seq = generate_queue_token()
+
+        # Calculate current active orders ahead in queue
+        active_ahead = self.order_repo.collection.count_documents({
+            "queue.queue_date": queue_date,
+            "status": {"$in": ["PENDING_PAYMENT", "CONFIRMED", "PREPARING", "READY_FOR_PICKUP"]}
+        })
+        initial_position = active_ahead + 1
+
+        # Calculate estimated ready time (Normal ~15 mins, Rush up to ~20 mins in IST)
+        now_ist = datetime.now(IST)
+        prep_minutes = 15 if active_ahead <= 2 else min(15 + (active_ahead - 2) * 2, 20)
+        estimated_ready_at = (now_ist + timedelta(minutes=prep_minutes)).isoformat()
+
+        queue_data = {
+            "token": token,
+            "position": initial_position,
+            "queue_date": queue_date,
+            "seq": seq,
+            "estimated_ready_at": estimated_ready_at
+        }
+
         order_doc: Dict[str, Any] = {
             "order_id": order_id,
             "pickup_pin": pickup_pin,
@@ -165,12 +188,39 @@ class OrderService:
                 "refund_status": None,
                 "refund_amount": None
             },
+            "queue": queue_data,
             "created_at": now_iso,
             "updated_at": now_iso
         }
 
         created_order = self.order_repo.create(order_doc)
         return created_order
+
+    def calculate_queue_position(self, order_doc: Dict[str, Any]) -> Optional[int]:
+        """
+        Dynamically calculate active queue position for an order.
+        Orders in terminal states (PICKED_UP, CANCELLED) are inactive (position = 0).
+        For active orders, count active orders on the same business date with seq <= order's seq.
+        """
+        current_status = order_doc.get("status")
+        if current_status not in ["PENDING_PAYMENT", "CONFIRMED", "PREPARING", "READY_FOR_PICKUP"]:
+            return 0
+
+        queue_info = order_doc.get("queue")
+        if not queue_info or not isinstance(queue_info, dict):
+            return None
+
+        queue_date = queue_info.get("queue_date")
+        seq = queue_info.get("seq")
+        if not queue_date or seq is None:
+            return None
+
+        active_count = self.order_repo.collection.count_documents({
+            "queue.queue_date": queue_date,
+            "status": {"$in": ["PENDING_PAYMENT", "CONFIRMED", "PREPARING", "READY_FOR_PICKUP"]},
+            "queue.seq": {"$lte": seq}
+        })
+        return max(1, active_count)
 
     def get_order(self, order_id: str, include_pin: bool = False) -> Dict[str, Any]:
         """Retrieve order by order_id, masking pickup_pin and phone for public lookups."""
@@ -186,6 +236,9 @@ class OrderService:
         if "customer" in order_copy and "phone" in order_copy["customer"]:
             order_copy["customer"] = dict(order_copy["customer"])
             order_copy["customer"]["phone"] = mask_phone(order_copy["customer"]["phone"])
+        if "queue" in order_copy and order_copy["queue"]:
+            order_copy["queue"] = dict(order_copy["queue"])
+            order_copy["queue"]["position"] = self.calculate_queue_position(order)
         return order_copy
 
     def update_order_status(self, order_id: str, new_status: str) -> Dict[str, Any]:
@@ -259,6 +312,9 @@ class OrderService:
         if "customer" in sanitized and "phone" in sanitized["customer"]:
             sanitized["customer"] = dict(sanitized["customer"])
             sanitized["customer"]["phone"] = mask_phone(sanitized["customer"]["phone"])
+        if "queue" in sanitized and sanitized["queue"]:
+            sanitized["queue"] = dict(sanitized["queue"])
+            sanitized["queue"]["position"] = self.calculate_queue_position(updated_order)
         return sanitized
 
     def confirm_payment(self, order_id: str, payment_reference: Optional[str] = None) -> Dict[str, Any]:
@@ -269,19 +325,49 @@ class OrderService:
         return self.update_order_status(order_id, "CONFIRMED")
 
     def get_order_status(self, order_id: str) -> Dict[str, Any]:
-        """Fast status retrieval for customer tracking."""
+        """Fast status retrieval for customer tracking, including dynamic queue position."""
         order = self.order_repo.get_by_id(order_id)
         if not order:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail={"code": "ORDER_NOT_FOUND", "message": f"Order with ID '{order_id}' was not found."}
             )
+        queue_info = dict(order.get("queue")) if order.get("queue") else None
+        if queue_info:
+            queue_info["position"] = self.calculate_queue_position(order)
+
         return {
             "order_id": order["order_id"],
             "status": order["status"],
             "pickup_time": order["pickup_time"],
             "payment": order["payment"],
-            "cancellation": order["cancellation"]
+            "cancellation": order["cancellation"],
+            "queue": queue_info
+        }
+
+    def get_order_queue(self, order_id: str) -> Dict[str, Any]:
+        """
+        Get customer queue information: token, active position, and estimated ready time.
+        Excludes pickup PIN and full phone number.
+        """
+        order = self.order_repo.get_by_id(order_id)
+        if not order:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail={"code": "ORDER_NOT_FOUND", "message": f"Order with ID '{order_id}' was not found."}
+            )
+        queue_info = order.get("queue")
+        if not queue_info:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail={"code": "QUEUE_NOT_FOUND", "message": f"Queue information for order '{order_id}' was not found."}
+            )
+        queue_copy = dict(queue_info)
+        queue_copy["position"] = self.calculate_queue_position(order)
+        return {
+            "order_id": order["order_id"],
+            "queue": queue_copy,
+            "status": order["status"]
         }
 
     def verify_pickup(self, order_id: str, pin_request: PickupVerificationRequest) -> Dict[str, Any]:

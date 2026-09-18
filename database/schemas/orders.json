@@ -89,6 +89,16 @@
         "refund_amount": { "type": ["number", "null"] }
       }
     },
+    "queue": {
+      "type": ["object", "null"],
+      "properties": {
+        "token": { "type": "string", "pattern": "^Q[0-9]{3,}$" },
+        "position": { "type": ["integer", "null"] },
+        "queue_date": { "type": "string" },
+        "seq": { "type": "integer" },
+        "estimated_ready_at": { "type": ["string", "null"] }
+      }
+    },
     "created_at": { "type": "string" },
     "updated_at": { "type": "string" }
   }

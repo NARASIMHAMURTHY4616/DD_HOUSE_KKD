@@ -174,7 +174,14 @@ Tracks orders with the following schema:
 4. **Cancellation Rules**:
    - Within **5 minutes** of order creation: eligible for full refund (`FULL_REFUND`), refund amount equals total order amount.
    - After **5 minutes**: cancellation recorded as `MANUAL_REVIEW_REQUIRED`, refund amount set to `null` (no fabricated fee or percentage).
-5. **RAG Integration Point**:
+5. **Customer Queue & Token System**:
+   - Every order receives a daily sequential token (e.g. `Q001`, `Q002`, `Q003`) atomically generated via MongoDB `$inc` counters.
+   - Queue counters reset daily at midnight in **Indian Standard Time (IST / Asia/Kolkata)**.
+   - **Queue Position**: Calculated dynamically based on active orders (`PENDING_PAYMENT`, `CONFIRMED`, `PREPARING`, `READY_FOR_PICKUP`) placed earlier on the same day. Completed (`PICKED_UP`) and `CANCELLED` orders drop out of the active queue (position `0`) while retaining their historical queue token.
+   - **Estimated Ready Time (ETA)**: Deterministically calculated as an operational estimate (15 to 20 minutes from placement in IST, reflecting standard store preparation time). It is an estimate and not a delivery guarantee.
+   - **PIN & Privacy Isolation**: Pickup PIN is strictly hidden from queue tracking endpoints. Customer phone numbers are masked (`******3210`).
+   - **Payment Integrity**: Having a queue token does not bypass payment confirmation; `PENDING_PAYMENT` orders remain unpaid until confirmed.
+6. **RAG Integration Point**:
    - `POST /api/chat` forwards inquiries to the RAG service.
    - Customer and transactional data are never exposed to RAG.
    - If the RAG service is unreachable, returns `503 Service Unavailable` with error code `RAG_SERVICE_UNAVAILABLE` and zero hallucinated answers.
@@ -263,9 +270,16 @@ Tracks orders with the following schema:
   "data": {
     "order_id": "DD202609180001",
     "pickup_pin": "4821",
+    "queue": {
+      "token": "Q001",
+      "position": 1,
+      "queue_date": "2026-09-18",
+      "seq": 1,
+      "estimated_ready_at": "2026-09-18T18:45:00+05:30"
+    },
     "customer": {
       "name": "Ravi Kumar",
-      "phone": "9876543210"
+      "phone": "******3210"
     },
     "items": [
       {
@@ -315,7 +329,7 @@ Tracks orders with the following schema:
 `GET /api/orders/DD202609180001`
 
 **Response (`200 OK`)**:
-Returns full order data, omitting `pickup_pin` for customer privacy and security.
+Returns full order data (including `queue` details), omitting `pickup_pin` for customer privacy and security. Customer phone is masked.
 
 ### 5. Order Tracking Status
 `GET /api/orders/DD202609180001/status`
@@ -328,6 +342,13 @@ Returns full order data, omitting `pickup_pin` for customer privacy and security
     "order_id": "DD202609180001",
     "status": "CONFIRMED",
     "pickup_time": "18:30",
+    "queue": {
+      "token": "Q001",
+      "position": 1,
+      "queue_date": "2026-09-18",
+      "seq": 1,
+      "estimated_ready_at": "2026-09-18T18:45:00+05:30"
+    },
     "payment": {
       "method": "UPI",
       "status": "PAID"
@@ -342,7 +363,30 @@ Returns full order data, omitting `pickup_pin` for customer privacy and security
 }
 ```
 
-### 6. Pickup Verification
+### 6. Customer Queue Token Lookup
+`GET /api/orders/DD202609180001/queue`
+
+Dedicated lightweight endpoint for customers tracking their queue progress from their car/on the road without exposing full order details or PIN.
+
+**Response (`200 OK`)**:
+```json
+{
+  "success": true,
+  "data": {
+    "order_id": "DD202609180001",
+    "queue": {
+      "token": "Q001",
+      "position": 1,
+      "queue_date": "2026-09-18",
+      "seq": 1,
+      "estimated_ready_at": "2026-09-18T18:45:00+05:30"
+    },
+    "status": "CONFIRMED"
+  }
+}
+```
+
+### 7. Pickup Verification
 `POST /api/orders/DD202609180001/pickup`
 
 **Request Body**:
@@ -364,7 +408,7 @@ Returns full order data, omitting `pickup_pin` for customer privacy and security
 }
 ```
 
-### 7. Cancel Order
+### 8. Cancel Order
 `POST /api/orders/DD202609180001/cancel`
 
 **Response (`200 OK`)**:
@@ -385,7 +429,7 @@ Returns full order data, omitting `pickup_pin` for customer privacy and security
 }
 ```
 
-### 8. Assistant / RAG Chat
+### 9. Assistant / RAG Chat
 `POST /api/chat`
 
 **Request Body**:
@@ -415,4 +459,4 @@ Run the complete test suite:
 python -m pytest -v
 ```
 
-All 25 test cases run using `mongomock` and do not require an active external database connection.
+All 70 test cases run using `mongomock` and do not require an active external database connection.
