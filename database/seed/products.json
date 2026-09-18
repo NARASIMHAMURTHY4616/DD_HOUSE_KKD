@@ -1,0 +1,98 @@
+[
+  {
+    "product_id": "CB001",
+    "name": "Chocolate Cake Bowl",
+    "category": "Cake Bowl",
+    "price": 89,
+    "available": true,
+    "customizable": true
+  },
+  {
+    "product_id": "CB002",
+    "name": "Double Chocolate",
+    "category": "Cake Bowl",
+    "price": 89,
+    "available": true,
+    "customizable": true
+  },
+  {
+    "product_id": "CB003",
+    "name": "Triple Chocolate",
+    "category": "Cake Bowl",
+    "price": 99,
+    "available": true,
+    "customizable": true
+  },
+  {
+    "product_id": "CB004",
+    "name": "Choco Truffle",
+    "category": "Cake Bowl",
+    "price": 99,
+    "available": true,
+    "customizable": true
+  },
+  {
+    "product_id": "CB005",
+    "name": "Nutella",
+    "category": "Cake Bowl",
+    "price": 89,
+    "available": true,
+    "customizable": true
+  },
+  {
+    "product_id": "CB006",
+    "name": "Oreo",
+    "category": "Cake Bowl",
+    "price": 89,
+    "available": true,
+    "customizable": true
+  },
+  {
+    "product_id": "CB007",
+    "name": "Vanilla",
+    "category": "Cake Bowl",
+    "price": 89,
+    "available": true,
+    "customizable": true
+  },
+  {
+    "product_id": "CB008",
+    "name": "Butterscotch",
+    "category": "Cake Bowl",
+    "price": 89,
+    "available": true,
+    "customizable": true
+  },
+  {
+    "product_id": "BR001",
+    "name": "Chocolate Brownie",
+    "category": "Brownie",
+    "price": 50,
+    "available": true,
+    "customizable": false
+  },
+  {
+    "product_id": "BR002",
+    "name": "Choco-Chip Brownie",
+    "category": "Brownie",
+    "price": 50,
+    "available": true,
+    "customizable": false
+  },
+  {
+    "product_id": "CL001",
+    "name": "Chocolate Lollipop",
+    "category": "Cake Lollipop",
+    "price": 30,
+    "available": true,
+    "customizable": false
+  },
+  {
+    "product_id": "CL002",
+    "name": "Vanilla Lollipop",
+    "category": "Cake Lollipop",
+    "price": 30,
+    "available": true,
+    "customizable": false
+  }
+]

@@ -1,0 +1,95 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Order",
+  "type": "object",
+  "required": [
+    "order_id",
+    "pickup_pin",
+    "customer",
+    "items",
+    "total_amount",
+    "pickup_time",
+    "payment",
+    "status",
+    "cancellation",
+    "created_at",
+    "updated_at"
+  ],
+  "properties": {
+    "order_id": {
+      "type": "string",
+      "pattern": "^DD[0-9]{12}$",
+      "description": "Unique Order ID format DDYYYYMMDDXXXX"
+    },
+    "pickup_pin": {
+      "type": "string",
+      "pattern": "^[0-9]{4}$",
+      "description": "Secure 4-digit pickup PIN"
+    },
+    "customer": {
+      "type": "object",
+      "required": ["name", "phone"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "phone": { "type": "string", "pattern": "^[0-9]{10}$" }
+      }
+    },
+    "items": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["product_id", "name", "quantity", "unit_price", "subtotal"],
+        "properties": {
+          "product_id": { "type": "string" },
+          "name": { "type": "string" },
+          "quantity": { "type": "integer", "minimum": 1 },
+          "unit_price": { "type": "number", "minimum": 0 },
+          "subtotal": { "type": "number", "minimum": 0 },
+          "customization": {
+            "type": ["object", "null"],
+            "properties": {
+              "flavor": { "type": ["string", "null"] },
+              "filling": { "type": ["string", "null"] },
+              "toppings": { "type": "array", "items": { "type": "string" } },
+              "sauce": { "type": ["string", "null"] },
+              "message": { "type": ["string", "null"], "description": "Message written on the BOX" }
+            }
+          }
+        }
+      }
+    },
+    "total_amount": {
+      "type": "number",
+      "minimum": 0
+    },
+    "pickup_time": {
+      "type": "string",
+      "description": "Customer requested pickup time"
+    },
+    "payment": {
+      "type": "object",
+      "required": ["method", "status"],
+      "properties": {
+        "method": { "type": "string", "enum": ["UPI", "CASH"] },
+        "status": { "type": "string", "enum": ["PENDING", "PAID", "FAILED", "REFUNDED", "PARTIALLY_REFUNDED"] }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": ["PENDING_PAYMENT", "CONFIRMED", "PREPARING", "READY_FOR_PICKUP", "PICKED_UP", "CANCELLED"]
+    },
+    "cancellation": {
+      "type": "object",
+      "required": ["cancelled"],
+      "properties": {
+        "cancelled": { "type": "boolean" },
+        "cancelled_at": { "type": ["string", "null"] },
+        "refund_status": { "type": ["string", "null"], "enum": ["FULL_REFUND", "MANUAL_REVIEW_REQUIRED", null] },
+        "refund_amount": { "type": ["number", "null"] }
+      }
+    },
+    "created_at": { "type": "string" },
+    "updated_at": { "type": "string" }
+  }
+}
