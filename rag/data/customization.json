@@ -1,0 +1,151 @@
+[
+  {
+    "id": "customization_cake_bowl_eligibility",
+    "category": "customization",
+    "name": "Cake Bowl Customization Eligibility",
+    "value": {
+      "eligible": true,
+      "item_type": "cake_bowl",
+      "description": "Cake bowls can be customized with flavours, fillings, toppings, and sauces/drizzles."
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "customization_flavours",
+    "category": "customization",
+    "name": "Customization Flavours",
+    "value": {
+      "item_type": "cake_bowl",
+      "options": [
+        "Vanilla",
+        "Chocolate",
+        "Red Velvet",
+        "Butterscotch",
+        "Oreo",
+        "Nutella",
+        "Fruit flavours",
+        "Other flavours available in the menu"
+      ]
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "customization_fillings",
+    "category": "customization",
+    "name": "Customization Fillings",
+    "value": {
+      "item_type": "cake_bowl",
+      "options": [
+        "Chocolate cream",
+        "Nutella",
+        "Oreo cream",
+        "Caramel",
+        "Fruit filling"
+      ]
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "customization_toppings",
+    "category": "customization",
+    "name": "Customization Toppings",
+    "value": {
+      "item_type": "cake_bowl",
+      "options": [
+        "Chocolate chips",
+        "Oreo pieces",
+        "Sprinkles",
+        "Nuts",
+        "Brownie pieces",
+        "Cherries"
+      ]
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "customization_sauces_drizzles",
+    "category": "customization",
+    "name": "Customization Sauces and Drizzles",
+    "value": {
+      "item_type": "cake_bowl",
+      "options": [
+        "Chocolate",
+        "White chocolate",
+        "Caramel",
+        "Nutella"
+      ]
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "customization_name_message",
+    "category": "customization",
+    "name": "Name and Message Customization",
+    "value": {
+      "allowed": true,
+      "target": "box",
+      "written_on_cake": false,
+      "written_on_box": true,
+      "instruction": "Customer can request a name and message. The name/message is NOT written directly on the cake. The name/message can be written on the BOX."
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "customization_custom_themes",
+    "category": "customization",
+    "name": "Custom Cake Design and Themes",
+    "value": {
+      "supported": false,
+      "statement": "There is NO custom cake design or theme service in the verified DD House project data."
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "customization_pricing",
+    "category": "customization",
+    "name": "Customization Pricing",
+    "value": null,
+    "extra_cost": true,
+    "exact_price": "TBD",
+    "note": "Customization costs extra. Exact customization pricing is UNKNOWN/TBD.",
+    "source_type": "unknown",
+    "verified": false,
+    "status": "TBD",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "customization_brownie_eligibility",
+    "category": "customization",
+    "name": "Brownie Customization",
+    "value": {
+      "eligible": false,
+      "item_type": "brownie",
+      "statement": "Brownies CANNOT be customized."
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  }
+]

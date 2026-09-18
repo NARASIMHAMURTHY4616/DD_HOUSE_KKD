@@ -1,0 +1,57 @@
+[
+  {
+    "id": "allergen_general_policy",
+    "category": "allergen",
+    "name": "General Allergen and Eggless Policy",
+    "value": null,
+    "source_type": "unknown",
+    "verified": false,
+    "status": "TBD",
+    "statement": "DO NOT assume DD House products are eggless. Allergen and eggless information is currently TBD. Prospective categories to collect include Milk/dairy, Egg, Nuts, Wheat/gluten, Soy, and others.",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "allergen_eggless_status_all",
+    "category": "allergen",
+    "name": "Eggless Status for All Products",
+    "value": null,
+    "source_type": "unknown",
+    "verified": false,
+    "status": "TBD",
+    "statement": "Eggless status is not yet verified for menu products.",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "allergen_triple_chocolate",
+    "category": "allergen",
+    "name": "Triple Chocolate Allergens",
+    "product": "Triple Chocolate",
+    "value": null,
+    "source_type": "unknown",
+    "verified": false,
+    "status": "TBD",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "allergen_oreo",
+    "category": "allergen",
+    "name": "Oreo Nut and Allergen Information",
+    "product": "Oreo",
+    "value": null,
+    "source_type": "unknown",
+    "verified": false,
+    "status": "TBD",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "allergen_chocolate_brownie",
+    "category": "allergen",
+    "name": "Chocolate Brownie Allergens",
+    "product": "Chocolate Brownie",
+    "value": null,
+    "source_type": "unknown",
+    "verified": false,
+    "status": "TBD",
+    "last_updated": "2026-09-18"
+  }
+]

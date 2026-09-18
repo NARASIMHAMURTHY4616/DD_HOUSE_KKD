@@ -1,0 +1,52 @@
+[
+  {
+    "id": "pickup_location_mandatory",
+    "category": "pickup",
+    "name": "Pickup Location",
+    "value": {
+      "mandatory": true,
+      "statement": "Pickup occurs at the DD House store (Venkat Nagar, Kakinada). Customers must collect their order from the store."
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "pickup_order_verification",
+    "category": "pickup",
+    "name": "Order ID and PIN Verification",
+    "value": {
+      "order_id_generated": true,
+      "pin_generated": true,
+      "statement": "An Order ID and a PIN are generated upon order placement. The customer must provide these relevant order identification details at the store counter to collect their order."
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "pickup_delay_handling",
+    "category": "pickup",
+    "name": "Pickup Delay Handling",
+    "value": {
+      "statement": "If the customer informs the store early about a pickup delay, the store attempts to keep the item safe. If necessary and appropriate, a fresh item may be prepared when the customer arrives."
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "pickup_max_holding_duration",
+    "category": "pickup",
+    "name": "Maximum Holding Duration",
+    "value": null,
+    "statement": "The exact maximum holding duration is TBD.",
+    "source_type": "unknown",
+    "verified": false,
+    "status": "TBD",
+    "last_updated": "2026-09-18"
+  }
+]

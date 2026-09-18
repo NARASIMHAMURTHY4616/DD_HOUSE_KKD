@@ -1,0 +1,95 @@
+[
+  {
+    "id": "business_name",
+    "category": "business",
+    "name": "Business Name",
+    "value": {
+      "name": "DD House"
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "business_type",
+    "category": "business",
+    "name": "Business Type",
+    "value": {
+      "type": "Cake / food store"
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "business_location",
+    "category": "business",
+    "name": "Store Location",
+    "value": {
+      "address": "Venkat Nagar, Jayendra Nagar, Siddartha Nagar, Kakinada, Andhra Pradesh – 533003",
+      "city": "Kakinada",
+      "state": "Andhra Pradesh",
+      "pincode": "533003"
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "business_hours",
+    "category": "business",
+    "name": "Operating Hours",
+    "value": {
+      "opening": "4:00 PM",
+      "closing": "11:00 PM",
+      "days": "Every day (Monday to Sunday)"
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "business_contact_phone",
+    "category": "business",
+    "name": "Phone Number",
+    "value": {
+      "phone": "7013522727"
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "business_contact_whatsapp",
+    "category": "business",
+    "name": "WhatsApp Number",
+    "value": {
+      "whatsapp": "7013522727",
+      "ordering_supported": false,
+      "note": "Available for contact only, not for ordering"
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "business_parking",
+    "category": "business",
+    "name": "Parking Information",
+    "value": {
+      "dedicated_parking": false,
+      "customer_advice": "Customers can use DMart parking.",
+      "disclaimer": "DMart parking is NOT an official DD House parking facility."
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  }
+]

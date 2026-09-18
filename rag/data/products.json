@@ -1,0 +1,184 @@
+[
+  {
+    "id": "product_chocolate_cake_bowl",
+    "category": "product",
+    "product_category": "cake_bowl",
+    "name": "Chocolate Cake Bowl",
+    "value": {
+      "price": 89,
+      "currency": "INR",
+      "available_daily": true
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "product_double_chocolate",
+    "category": "product",
+    "product_category": "cake_bowl",
+    "name": "Double Chocolate",
+    "value": {
+      "price": 89,
+      "currency": "INR",
+      "available_daily": true
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "product_triple_chocolate",
+    "category": "product",
+    "product_category": "cake_bowl",
+    "name": "Triple Chocolate",
+    "value": {
+      "price": 99,
+      "currency": "INR",
+      "available_daily": true
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "product_choco_truffle",
+    "category": "product",
+    "product_category": "cake_bowl",
+    "name": "Choco Truffle",
+    "value": {
+      "price": 99,
+      "currency": "INR",
+      "available_daily": true
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "product_nutella",
+    "category": "product",
+    "product_category": "cake_bowl",
+    "name": "Nutella",
+    "value": {
+      "price": 89,
+      "currency": "INR",
+      "available_daily": true
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "product_oreo",
+    "category": "product",
+    "product_category": "cake_bowl",
+    "name": "Oreo",
+    "value": {
+      "price": 89,
+      "currency": "INR",
+      "available_daily": true
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "product_vanilla",
+    "category": "product",
+    "product_category": "cake_bowl",
+    "name": "Vanilla",
+    "value": {
+      "price": 89,
+      "currency": "INR",
+      "available_daily": true
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "product_butterscotch",
+    "category": "product",
+    "product_category": "cake_bowl",
+    "name": "Butterscotch",
+    "value": {
+      "price": 89,
+      "currency": "INR",
+      "available_daily": true
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "product_chocolate_brownie",
+    "category": "product",
+    "product_category": "brownie",
+    "name": "Chocolate Brownie",
+    "value": {
+      "price": 50,
+      "currency": "INR",
+      "available_daily": true,
+      "customizable": false
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "product_choco_chip_brownie",
+    "category": "product",
+    "product_category": "brownie",
+    "name": "Choco-Chip Brownie",
+    "value": {
+      "price": 50,
+      "currency": "INR",
+      "available_daily": true,
+      "customizable": false
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "product_chocolate_lollipop",
+    "category": "product",
+    "product_category": "cake_lollipop",
+    "name": "Chocolate Lollipop",
+    "value": {
+      "price": 30,
+      "currency": "INR",
+      "available_daily": true
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "product_vanilla_lollipop",
+    "category": "product",
+    "product_category": "cake_lollipop",
+    "name": "Vanilla Lollipop",
+    "value": {
+      "price": 30,
+      "currency": "INR",
+      "available_daily": true
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  }
+]

@@ -1,0 +1,53 @@
+[
+  {
+    "id": "cancellation_within_5_minutes",
+    "category": "cancellation_refund",
+    "name": "Cancellation Within 5 Minutes",
+    "value": {
+      "allowed": true,
+      "time_window": "Within 5 minutes",
+      "refund_type": "Full refund",
+      "statement": "Within 5 minutes of placing the order, the customer can cancel and get a full refund."
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "cancellation_after_5_minutes",
+    "category": "cancellation_refund",
+    "name": "Cancellation After 5 Minutes",
+    "value": {
+      "allowed": true,
+      "time_window": "After 5 minutes",
+      "statement": "After 5 minutes, some amount will be charged and the remaining amount will be refunded, depending on elapsed time and preparation status. There is no verified fixed percentage or fixed cancellation fee."
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "cancellation_exact_fee",
+    "category": "cancellation_refund",
+    "name": "Exact Cancellation Fee",
+    "value": null,
+    "statement": "There is NO verified fixed percentage or fixed cancellation fee. Exact refund calculation depends on elapsed time and preparation status.",
+    "source_type": "unknown",
+    "verified": false,
+    "status": "TBD",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "refund_processing_time",
+    "category": "cancellation_refund",
+    "name": "Refund Processing Time",
+    "value": null,
+    "statement": "Exact refund processing time is TBD.",
+    "source_type": "unknown",
+    "verified": false,
+    "status": "TBD",
+    "last_updated": "2026-09-18"
+  }
+]

@@ -1,0 +1,57 @@
+[
+  {
+    "id": "payment_methods_upi",
+    "category": "payment",
+    "name": "UPI Payment",
+    "value": {
+      "accepted": true,
+      "method": "UPI",
+      "statement": "DD House accepts UPI payment."
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "payment_methods_cash",
+    "category": "payment",
+    "name": "Cash Payment",
+    "value": {
+      "accepted": true,
+      "method": "Cash",
+      "statement": "DD House accepts Cash payment."
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "payment_advance_requirement",
+    "category": "payment",
+    "name": "Advance Payment Requirement",
+    "value": {
+      "required": true,
+      "order_type": "online",
+      "statement": "Online orders require advance payment."
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "payment_online_pricing",
+    "category": "payment",
+    "name": "Online Product Pricing",
+    "value": {
+      "different_pricing": false,
+      "statement": "Online product prices are the same as menu prices."
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  }
+]

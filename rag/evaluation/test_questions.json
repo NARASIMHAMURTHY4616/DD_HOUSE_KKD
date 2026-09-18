@@ -1,0 +1,402 @@
+[
+  {
+    "id": 1,
+    "category": "PRODUCTS",
+    "question": "What is the Chocolate Cake Bowl price?",
+    "expected_grounded": true,
+    "must_contain": ["89"],
+    "must_not_contain": []
+  },
+  {
+    "id": 2,
+    "category": "PRODUCTS",
+    "question": "How much is Triple Chocolate?",
+    "expected_grounded": true,
+    "must_contain": ["99"],
+    "must_not_contain": []
+  },
+  {
+    "id": 3,
+    "category": "PRODUCTS",
+    "question": "How much is Oreo?",
+    "expected_grounded": true,
+    "must_contain": ["89"],
+    "must_not_contain": []
+  },
+  {
+    "id": 4,
+    "category": "PRODUCTS",
+    "question": "What brownies do you have?",
+    "expected_grounded": true,
+    "must_contain": ["Brownie"],
+    "must_not_contain": []
+  },
+  {
+    "id": 5,
+    "category": "PRODUCTS",
+    "question": "How much is Chocolate Brownie?",
+    "expected_grounded": true,
+    "must_contain": ["50"],
+    "must_not_contain": []
+  },
+  {
+    "id": 6,
+    "category": "PRODUCTS",
+    "question": "How much is Vanilla Lollipop?",
+    "expected_grounded": true,
+    "must_contain": ["30"],
+    "must_not_contain": []
+  },
+  {
+    "id": 7,
+    "category": "CUSTOMIZATION",
+    "question": "Can I customize a cake bowl?",
+    "expected_grounded": true,
+    "must_contain": ["customized", "cake bowl"],
+    "must_not_contain": ["cannot be customized"]
+  },
+  {
+    "id": 8,
+    "category": "CUSTOMIZATION",
+    "question": "What fillings are available?",
+    "expected_grounded": true,
+    "must_contain": ["filling"],
+    "must_not_contain": []
+  },
+  {
+    "id": 9,
+    "category": "CUSTOMIZATION",
+    "question": "What toppings are available?",
+    "expected_grounded": true,
+    "must_contain": ["topping"],
+    "must_not_contain": []
+  },
+  {
+    "id": 10,
+    "category": "CUSTOMIZATION",
+    "question": "What sauces are available?",
+    "expected_grounded": true,
+    "must_contain": ["sauce"],
+    "must_not_contain": []
+  },
+  {
+    "id": 11,
+    "category": "CUSTOMIZATION",
+    "question": "Can I add Nutella?",
+    "expected_grounded": true,
+    "must_contain": ["Nutella"],
+    "must_not_contain": []
+  },
+  {
+    "id": 12,
+    "category": "CUSTOMIZATION",
+    "question": "Can I write my name on the cake?",
+    "expected_grounded": true,
+    "must_contain": ["box", "not"],
+    "must_not_contain": []
+  },
+  {
+    "id": 13,
+    "category": "CUSTOMIZATION",
+    "question": "Where is the message written?",
+    "expected_grounded": true,
+    "must_contain": ["box"],
+    "must_not_contain": []
+  },
+  {
+    "id": 14,
+    "category": "CUSTOMIZATION",
+    "question": "Can I customize a brownie?",
+    "expected_grounded": true,
+    "must_contain": ["cannot", "brownie"],
+    "must_not_contain": ["yes, brownies can"]
+  },
+  {
+    "id": 15,
+    "category": "CUSTOMIZATION",
+    "question": "Can I request a custom cake theme?",
+    "expected_grounded": true,
+    "must_contain": ["no custom", "theme"],
+    "must_not_contain": ["yes, we design"]
+  },
+  {
+    "id": 16,
+    "category": "BUSINESS",
+    "question": "When does DD House open?",
+    "expected_grounded": true,
+    "must_contain": ["4:00 PM"],
+    "must_not_contain": ["10:00 AM"]
+  },
+  {
+    "id": 17,
+    "category": "BUSINESS",
+    "question": "When does DD House close?",
+    "expected_grounded": true,
+    "must_contain": ["11:00 PM"],
+    "must_not_contain": ["10:00 PM"]
+  },
+  {
+    "id": 18,
+    "category": "BUSINESS",
+    "question": "Are you open on Sunday?",
+    "expected_grounded": true,
+    "must_contain": ["Sunday", "open"],
+    "must_not_contain": ["closed"]
+  },
+  {
+    "id": 19,
+    "category": "BUSINESS",
+    "question": "What is your phone number?",
+    "expected_grounded": true,
+    "must_contain": ["7013522727"],
+    "must_not_contain": ["9948732532"]
+  },
+  {
+    "id": 20,
+    "category": "BUSINESS",
+    "question": "Where is DD House?",
+    "expected_grounded": true,
+    "must_contain": ["Kakinada"],
+    "must_not_contain": []
+  },
+  {
+    "id": 21,
+    "category": "ORDERING",
+    "question": "Can I order online?",
+    "expected_grounded": true,
+    "must_contain": ["website"],
+    "must_not_contain": []
+  },
+  {
+    "id": 22,
+    "category": "ORDERING",
+    "question": "Can I order through WhatsApp?",
+    "expected_grounded": true,
+    "must_contain": ["not", "whatsapp"],
+    "must_not_contain": ["yes, you can order through whatsapp"]
+  },
+  {
+    "id": 23,
+    "category": "ORDERING",
+    "question": "Can I order through Instagram?",
+    "expected_grounded": true,
+    "must_contain": ["not", "instagram"],
+    "must_not_contain": ["yes, order via instagram"]
+  },
+  {
+    "id": 24,
+    "category": "ORDERING",
+    "question": "Can I order multiple products?",
+    "expected_grounded": true,
+    "must_contain": ["multiple"],
+    "must_not_contain": []
+  },
+  {
+    "id": 25,
+    "category": "ORDERING",
+    "question": "Can I pre-book?",
+    "expected_grounded": true,
+    "must_contain": ["pre-book", "4 hours"],
+    "must_not_contain": []
+  },
+  {
+    "id": 26,
+    "category": "ORDERING",
+    "question": "How early can I pre-book?",
+    "expected_grounded": true,
+    "must_contain": ["4 hours"],
+    "must_not_contain": []
+  },
+  {
+    "id": 27,
+    "category": "ORDERING",
+    "question": "Can I place a same-day order?",
+    "expected_grounded": true,
+    "must_contain": ["same-day"],
+    "must_not_contain": []
+  },
+  {
+    "id": 28,
+    "category": "ORDERING",
+    "question": "How long does preparation take?",
+    "expected_grounded": true,
+    "must_contain": ["15 minutes"],
+    "must_not_contain": []
+  },
+  {
+    "id": 29,
+    "category": "PAYMENT",
+    "question": "Do you accept UPI?",
+    "expected_grounded": true,
+    "must_contain": ["UPI"],
+    "must_not_contain": ["do not accept upi"]
+  },
+  {
+    "id": 30,
+    "category": "PAYMENT",
+    "question": "Do you accept cash?",
+    "expected_grounded": true,
+    "must_contain": ["Cash"],
+    "must_not_contain": ["do not accept cash"]
+  },
+  {
+    "id": 31,
+    "category": "PAYMENT",
+    "question": "Is advance payment required?",
+    "expected_grounded": true,
+    "must_contain": ["advance payment"],
+    "must_not_contain": []
+  },
+  {
+    "id": 32,
+    "category": "PAYMENT",
+    "question": "Are online prices different?",
+    "expected_grounded": true,
+    "must_contain": ["same"],
+    "must_not_contain": ["extra charge"]
+  },
+  {
+    "id": 33,
+    "category": "PICKUP",
+    "question": "Do you deliver?",
+    "expected_grounded": true,
+    "must_contain": ["pickup", "delivery"],
+    "must_not_contain": ["yes, we offer delivery", "home delivery is available"]
+  },
+  {
+    "id": 34,
+    "category": "PICKUP",
+    "question": "Where do I collect my order?",
+    "expected_grounded": true,
+    "must_contain": ["store"],
+    "must_not_contain": []
+  },
+  {
+    "id": 35,
+    "category": "PICKUP",
+    "question": "What is the order PIN?",
+    "expected_grounded": true,
+    "must_contain": ["PIN", "counter"],
+    "must_not_contain": []
+  },
+  {
+    "id": 36,
+    "category": "PICKUP",
+    "question": "What happens if I am late?",
+    "expected_grounded": true,
+    "must_contain": ["safe"],
+    "must_not_contain": []
+  },
+  {
+    "id": 37,
+    "category": "CANCELLATION",
+    "question": "Can I cancel within 5 minutes?",
+    "expected_grounded": true,
+    "must_contain": ["full refund"],
+    "must_not_contain": []
+  },
+  {
+    "id": 38,
+    "category": "CANCELLATION",
+    "question": "What happens after 5 minutes?",
+    "expected_grounded": true,
+    "must_contain": ["charged"],
+    "must_not_contain": []
+  },
+  {
+    "id": 39,
+    "category": "CANCELLATION",
+    "question": "What is the exact cancellation fee?",
+    "expected_grounded": false,
+    "must_contain": ["no verified", "fee"],
+    "must_not_contain": ["₹50", "₹100", "₹20", "20%", "50%"]
+  },
+  {
+    "id": 40,
+    "category": "UNKNOWN_HALLUCINATION",
+    "question": "Do you deliver to Hyderabad?",
+    "expected_grounded": false,
+    "must_contain": ["7013522727"],
+    "must_not_contain": ["Yes, we deliver to Hyderabad"]
+  },
+  {
+    "id": 41,
+    "category": "UNKNOWN_HALLUCINATION",
+    "question": "Are all products eggless?",
+    "expected_grounded": false,
+    "must_contain": ["ingredient/allergen information"],
+    "must_not_contain": ["Yes, all our cakes are 100% eggless"]
+  },
+  {
+    "id": 42,
+    "category": "UNKNOWN_HALLUCINATION",
+    "question": "What are the ingredients in Triple Chocolate?",
+    "expected_grounded": false,
+    "must_contain": ["ingredient/allergen information"],
+    "must_not_contain": ["flour, cocoa powder, sugar, butter"]
+  },
+  {
+    "id": 43,
+    "category": "UNKNOWN_HALLUCINATION",
+    "question": "Does Oreo contain nuts?",
+    "expected_grounded": false,
+    "must_contain": ["ingredient/allergen information"],
+    "must_not_contain": ["Yes, it has almonds", "No, it is strictly nut free"]
+  },
+  {
+    "id": 44,
+    "category": "UNKNOWN_HALLUCINATION",
+    "question": "What is the customization price?",
+    "expected_grounded": false,
+    "must_contain": ["7013522727"],
+    "must_not_contain": ["Customization costs ₹20", "Customization is ₹50"]
+  },
+  {
+    "id": 45,
+    "category": "UNKNOWN_HALLUCINATION",
+    "question": "What is the refund percentage after 10 minutes?",
+    "expected_grounded": false,
+    "must_contain": ["7013522727"],
+    "must_not_contain": ["50% refund", "20% refund", "80% refund"]
+  },
+  {
+    "id": 46,
+    "category": "UNKNOWN_HALLUCINATION",
+    "question": "Do you have a Vijayawada branch?",
+    "expected_grounded": false,
+    "must_contain": ["7013522727"],
+    "must_not_contain": ["Yes, we are located in Vijayawada"]
+  },
+  {
+    "id": 47,
+    "category": "UNKNOWN_HALLUCINATION",
+    "question": "Do you have a loyalty program?",
+    "expected_grounded": false,
+    "must_contain": ["7013522727"],
+    "must_not_contain": ["Yes, earn points on every order"]
+  },
+  {
+    "id": 48,
+    "category": "UNKNOWN_HALLUCINATION",
+    "question": "What is the calorie count of the Chocolate Brownie?",
+    "expected_grounded": false,
+    "must_contain": ["7013522727"],
+    "must_not_contain": ["250 calories", "350 kcal"]
+  },
+  {
+    "id": 49,
+    "category": "UNKNOWN_HALLUCINATION",
+    "question": "Can I order a 2 kg birthday cake?",
+    "expected_grounded": false,
+    "must_contain": ["7013522727"],
+    "must_not_contain": ["Yes, 2 kg cake is available"]
+  },
+  {
+    "id": 50,
+    "category": "UNKNOWN_HALLUCINATION",
+    "question": "Do you provide wedding cakes?",
+    "expected_grounded": false,
+    "must_contain": ["7013522727"],
+    "must_not_contain": ["Yes, we make wedding cakes"]
+  }
+]

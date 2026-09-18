@@ -1,0 +1,23 @@
+# DD House — Policies & TBD Records
+
+- **General Allergen and Eggless Policy** (Verified: False): DO NOT assume DD House products are eggless. Allergen and eggless information is currently TBD. Prospective categories to collect include Milk/dairy, Egg, Nuts, Wheat/gluten, Soy, and others.
+- **Eggless Status for All Products** (Verified: False): Eggless status is not yet verified for menu products.
+- **Triple Chocolate Allergens** (Verified: False): None
+- **Oreo Nut and Allergen Information** (Verified: False): None
+- **Chocolate Brownie Allergens** (Verified: False): None
+- **Cancellation Within 5 Minutes** (Verified: True): Within 5 minutes of placing the order, the customer can cancel and get a full refund.
+- **Cancellation After 5 Minutes** (Verified: True): After 5 minutes, some amount will be charged and the remaining amount will be refunded, depending on elapsed time and preparation status. There is no verified fixed percentage or fixed cancellation fee.
+- **Exact Cancellation Fee** (Verified: False): There is NO verified fixed percentage or fixed cancellation fee. Exact refund calculation depends on elapsed time and preparation status.
+- **Refund Processing Time** (Verified: False): Exact refund processing time is TBD.
+- **Chocolate Cake Bowl Ingredients** (Verified: False): None
+- **Double Chocolate Ingredients** (Verified: False): None
+- **Triple Chocolate Ingredients** (Verified: False): None
+- **Choco Truffle Ingredients** (Verified: False): None
+- **Nutella Cake Bowl Ingredients** (Verified: False): None
+- **Oreo Cake Bowl Ingredients** (Verified: False): None
+- **Vanilla Cake Bowl Ingredients** (Verified: False): None
+- **Butterscotch Cake Bowl Ingredients** (Verified: False): None
+- **Chocolate Brownie Ingredients** (Verified: False): None
+- **Choco-Chip Brownie Ingredients** (Verified: False): None
+- **Chocolate Lollipop Ingredients** (Verified: False): None
+- **Vanilla Lollipop Ingredients** (Verified: False): None

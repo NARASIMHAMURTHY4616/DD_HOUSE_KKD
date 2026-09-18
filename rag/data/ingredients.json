@@ -1,0 +1,134 @@
+[
+  {
+    "id": "ingredient_chocolate_cake_bowl",
+    "category": "ingredient",
+    "name": "Chocolate Cake Bowl Ingredients",
+    "product": "Chocolate Cake Bowl",
+    "value": null,
+    "source_type": "unknown",
+    "verified": false,
+    "status": "TBD",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "ingredient_double_chocolate",
+    "category": "ingredient",
+    "name": "Double Chocolate Ingredients",
+    "product": "Double Chocolate",
+    "value": null,
+    "source_type": "unknown",
+    "verified": false,
+    "status": "TBD",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "ingredient_triple_chocolate",
+    "category": "ingredient",
+    "name": "Triple Chocolate Ingredients",
+    "product": "Triple Chocolate",
+    "value": null,
+    "source_type": "unknown",
+    "verified": false,
+    "status": "TBD",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "ingredient_choco_truffle",
+    "category": "ingredient",
+    "name": "Choco Truffle Ingredients",
+    "product": "Choco Truffle",
+    "value": null,
+    "source_type": "unknown",
+    "verified": false,
+    "status": "TBD",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "ingredient_nutella",
+    "category": "ingredient",
+    "name": "Nutella Cake Bowl Ingredients",
+    "product": "Nutella",
+    "value": null,
+    "source_type": "unknown",
+    "verified": false,
+    "status": "TBD",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "ingredient_oreo",
+    "category": "ingredient",
+    "name": "Oreo Cake Bowl Ingredients",
+    "product": "Oreo",
+    "value": null,
+    "source_type": "unknown",
+    "verified": false,
+    "status": "TBD",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "ingredient_vanilla",
+    "category": "ingredient",
+    "name": "Vanilla Cake Bowl Ingredients",
+    "product": "Vanilla",
+    "value": null,
+    "source_type": "unknown",
+    "verified": false,
+    "status": "TBD",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "ingredient_butterscotch",
+    "category": "ingredient",
+    "name": "Butterscotch Cake Bowl Ingredients",
+    "product": "Butterscotch",
+    "value": null,
+    "source_type": "unknown",
+    "verified": false,
+    "status": "TBD",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "ingredient_chocolate_brownie",
+    "category": "ingredient",
+    "name": "Chocolate Brownie Ingredients",
+    "product": "Chocolate Brownie",
+    "value": null,
+    "source_type": "unknown",
+    "verified": false,
+    "status": "TBD",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "ingredient_choco_chip_brownie",
+    "category": "ingredient",
+    "name": "Choco-Chip Brownie Ingredients",
+    "product": "Choco-Chip Brownie",
+    "value": null,
+    "source_type": "unknown",
+    "verified": false,
+    "status": "TBD",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "ingredient_chocolate_lollipop",
+    "category": "ingredient",
+    "name": "Chocolate Lollipop Ingredients",
+    "product": "Chocolate Lollipop",
+    "value": null,
+    "source_type": "unknown",
+    "verified": false,
+    "status": "TBD",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "ingredient_vanilla_lollipop",
+    "category": "ingredient",
+    "name": "Vanilla Lollipop Ingredients",
+    "product": "Vanilla Lollipop",
+    "value": null,
+    "source_type": "unknown",
+    "verified": false,
+    "status": "TBD",
+    "last_updated": "2026-09-18"
+  }
+]

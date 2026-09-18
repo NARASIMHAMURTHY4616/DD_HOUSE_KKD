@@ -1,0 +1,97 @@
+{
+  "external_source": {
+    "url": "https://www.ddcakehouse.com/",
+    "source_type": "external_reference",
+    "verified": false,
+    "last_checked": "2026-09-18"
+  },
+  "raw_external_records": [
+    {
+      "id": "external_contact_phone",
+      "category": "contact",
+      "value": "9948732532",
+      "source": "https://www.ddcakehouse.com/",
+      "source_type": "external_reference",
+      "verified": false,
+      "status": "conflicting"
+    },
+    {
+      "id": "external_operating_hours",
+      "category": "business",
+      "value": "10:00 AM – 10:00 PM",
+      "source": "https://www.ddcakehouse.com/",
+      "source_type": "external_reference",
+      "verified": false,
+      "status": "conflicting"
+    },
+    {
+      "id": "external_location_wording",
+      "category": "business",
+      "value": "Besides Dmart, Gudarigunta, Kakinada",
+      "source": "https://www.ddcakehouse.com/",
+      "source_type": "external_reference",
+      "verified": false,
+      "status": "conflicting"
+    },
+    {
+      "id": "external_delivery_info",
+      "category": "ordering",
+      "value": "Website states delivery information available",
+      "source": "https://www.ddcakehouse.com/",
+      "source_type": "external_reference",
+      "verified": false,
+      "status": "conflicting"
+    },
+    {
+      "id": "external_custom_cake_info",
+      "category": "customization",
+      "value": "Website contains custom cake theme and design options",
+      "source": "https://www.ddcakehouse.com/",
+      "source_type": "external_reference",
+      "verified": false,
+      "status": "conflicting"
+    }
+  ],
+  "conflicts": [
+    {
+      "field": "phone",
+      "business_provided": "7013522727",
+      "external_reference": "9948732532",
+      "status": "CONFLICT",
+      "customer_answer": "7013522727",
+      "reason": "Business-provided project data has higher authority"
+    },
+    {
+      "field": "operating_hours",
+      "business_provided": "4:00 PM – 11:00 PM",
+      "external_reference": "10:00 AM – 10:00 PM",
+      "status": "CONFLICT",
+      "customer_answer": "4:00 PM to 11:00 PM every day",
+      "reason": "Business-provided project data has higher authority"
+    },
+    {
+      "field": "location_address",
+      "business_provided": "Venkat Nagar, Jayendra Nagar, Siddartha Nagar, Kakinada, Andhra Pradesh – 533003",
+      "external_reference": "Besides Dmart, Gudarigunta, Kakinada",
+      "status": "CONFLICT",
+      "customer_answer": "Venkat Nagar, Jayendra Nagar, Siddartha Nagar, Kakinada, Andhra Pradesh – 533003",
+      "reason": "Business-provided project data has higher authority"
+    },
+    {
+      "field": "delivery_support",
+      "business_provided": "No delivery; store pickup only",
+      "external_reference": "Website states delivery information",
+      "status": "CONFLICT",
+      "customer_answer": "DD House currently supports store pickup rather than delivery.",
+      "reason": "Business-provided project data has higher authority"
+    },
+    {
+      "field": "custom_cake_service",
+      "business_provided": "No custom cake design/theme service; box message only",
+      "external_reference": "Website contains additional custom-cake information",
+      "status": "CONFLICT",
+      "customer_answer": "There is no custom cake design or theme service in the verified DD House data.",
+      "reason": "Business-provided project data has higher authority"
+    }
+  ]
+}

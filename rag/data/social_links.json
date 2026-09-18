@@ -1,0 +1,18 @@
+[
+  {
+    "id": "social_instagram",
+    "category": "social",
+    "name": "Official Instagram Handle",
+    "value": {
+      "platform": "Instagram",
+      "url": "https://www.instagram.com/ddhousekkd/",
+      "ordering_supported": false,
+      "crawled": false,
+      "note": "Provided by project team. Instagram ordering is NOT supported. Do not invent Instagram post content."
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  }
+]

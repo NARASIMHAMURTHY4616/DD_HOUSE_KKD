@@ -1,0 +1,125 @@
+[
+  {
+    "id": "ordering_channels_website",
+    "category": "ordering",
+    "name": "Website Ordering",
+    "value": {
+      "supported": true,
+      "channel": "website",
+      "statement": "Online ordering is supported through the DD House website."
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "ordering_channels_whatsapp",
+    "category": "ordering",
+    "name": "WhatsApp Ordering",
+    "value": {
+      "supported": false,
+      "channel": "whatsapp",
+      "statement": "Ordering through WhatsApp is NOT supported. The WhatsApp number is for contact only."
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "ordering_channels_instagram",
+    "category": "ordering",
+    "name": "Instagram Ordering",
+    "value": {
+      "supported": false,
+      "channel": "instagram",
+      "statement": "Ordering through Instagram is NOT supported."
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "ordering_multiple_products",
+    "category": "ordering",
+    "name": "Multiple Products Ordering",
+    "value": {
+      "supported": true,
+      "statement": "Customers can order multiple products in a single order."
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "ordering_pickup_time_selection",
+    "category": "ordering",
+    "name": "Pickup Time Selection",
+    "value": {
+      "supported": true,
+      "statement": "Customers can select their preferred pickup time when placing an order."
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "ordering_same_day",
+    "category": "ordering",
+    "name": "Same-Day Orders",
+    "value": {
+      "supported": true,
+      "statement": "Same-day orders are supported at DD House."
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "ordering_prebooking",
+    "category": "ordering",
+    "name": "Pre-Booking Orders",
+    "value": {
+      "supported": true,
+      "advance_window": "4 hours in advance",
+      "statement": "Pre-booking orders is supported. Customers can pre-book at least 4 hours in advance."
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "ordering_preparation_time",
+    "category": "ordering",
+    "name": "Preparation Time",
+    "value": {
+      "normal_minutes": 15,
+      "rush_minutes": 20,
+      "statement": "Normal preparation takes 15 minutes. During heavy rush, preparation takes up to 20 minutes."
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "ordering_pickup_only_delivery",
+    "category": "ordering",
+    "name": "Pickup and Delivery Policy",
+    "value": {
+      "pickup_required": true,
+      "delivery_supported": false,
+      "statement": "DD House currently supports store pickup rather than delivery. Customer MUST pick up the order from the store."
+    },
+    "source_type": "business_provided",
+    "verified": true,
+    "status": "active",
+    "last_updated": "2026-09-18"
+  }
+]
