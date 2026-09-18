@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Product",
+  "type": "object",
+  "required": ["product_id", "name", "category", "price", "available", "customizable"],
+  "properties": {
+    "product_id": {
+      "type": "string",
+      "description": "Unique product identifier e.g. CB001, BR001, CL001"
+    },
+    "name": {
+      "type": "string",
+      "description": "Name of the product"
+    },
+    "category": {
+      "type": "string",
+      "enum": ["Cake Bowl", "Brownie", "Cake Lollipop"],
+      "description": "Category of the product"
+    },
+    "price": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Price in INR"
+    },
+    "available": {
+      "type": "boolean",
+      "description": "Whether product is currently available"
+    },
+    "customizable": {
+      "type": "boolean",
+      "description": "Whether product supports customization (only Cake Bowls)"
+    }
+  },
+  "additionalProperties": false
+}
